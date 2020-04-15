@@ -79,12 +79,13 @@ int main() {
 
 	unordered_map<vector<vector<int>>, int, ObjectHasher> dist;
 
-	dist[begin] = 0;
+	dist[begin] = 1;
 
 	deque<vector<vector<int>>> cur;
 	cur.push_back(begin);
 
-	while (cur.empty() != 0) {
+	while (cur.empty() == false) {
+		cout << 'r';
 		vector<vector<int>> now = cur[0];
 		cur.pop_front();
 		bool t = true;
@@ -96,8 +97,8 @@ int main() {
 		}
 
 		if (t) {
-			cout << "YES for" << dist[now] << '\n';
-			break;
+			cout << "YES for " << dist[now] << " steps" << '\n';
+			return 0;
 		}
 
 		for (int i = 0; i < 8; i++) {
@@ -115,14 +116,16 @@ int main() {
 					}
 				}
 			}
-			for (int j = 0; j < 9; j++) {
-				if (i == j) continue;
+			for (int j = 0; j < 8; j++) {
+
+				if (now[i].size() == 0 || i == j || now[j].size() == 0) continue;
+				//cout << now[i].back() << ' ' << now[j].back() << endl;
 				if (now[j].size() != 0 && now[i].back() < now[j].back()) {
 					vector<vector<int>> r = now;
 					int c = r[i].back();
 					r[i].pop_back();
 					r[j].push_back(c);
-					if (dist[r] != 0) {
+					if (dist[r] == 0) {
 						dist[r] = dist[now] + 1;
 						cur.push_back(r);
 					}
@@ -131,6 +134,5 @@ int main() {
 		}
 	}
 	cout << "NO" << endl;
-	//system("pause");
 	return 0;
 }
